@@ -1,0 +1,136 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  outline: 0;
+  border: none;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding-top: 7rem;
+  height: 100vh;
+}
+
+body p {
+  color: #0084ff;
+}
+
+body .container {
+  width: 40vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 2rem;
+}
+
+body .container button {
+  background-color: #0084ff;
+  border: 1px solid #0084ff;
+  padding: 0.3rem 1rem;
+  color: white;
+  cursor: pointer;
+  -webkit-transition: 300ms ease-in-out;
+  transition: 300ms ease-in-out;
+}
+
+body .container button:hover {
+  opacity: 0.9;
+}
+
+body .container h1, body .container h2 {
+  color: #0084ff;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+body .container h2 {
+  font-size: 1rem;
+}
+
+body .container form {
+  width: 100%;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 85% 15%;
+      grid-template-columns: 85% 15%;
+}
+
+body .container input {
+  width: 100%;
+  padding: 0.3rem 1rem;
+  color: #0084ff;
+  border: 1px solid #0084ff;
+}
+
+body .container input::-webkit-input-placeholder {
+  color: #0084ff;
+  opacity: 0.5;
+}
+
+body .container input:-ms-input-placeholder {
+  color: #0084ff;
+  opacity: 0.5;
+}
+
+body .container input::-ms-input-placeholder {
+  color: #0084ff;
+  opacity: 0.5;
+}
+
+body .container input::placeholder {
+  color: #0084ff;
+  opacity: 0.5;
+}
+
+body .container .todoContainer {
+  width: 100%;
+}
+
+body .container .todoContainer .todoItem, body .container .todoContainer .heading {
+  border: 1px solid #0084ff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  place-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+body .container .todoContainer .todoItem .todo, body .container .todoContainer .heading .todo {
+  padding-left: 1rem;
+}
+
+body .container .todoContainer .heading {
+  border: none;
+}
+
+@media screen and (max-width: 900px) {
+  body .container {
+    width: 65vw;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  body .container {
+    width: 90vw;
+  }
+  body .container h1 {
+    font-size: 1.5rem;
+  }
+}
+/*# sourceMappingURL=style.css.map */
