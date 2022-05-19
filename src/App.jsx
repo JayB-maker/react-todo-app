@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "./style/style.css";
+import Axios from "axios";
 
 const App = () => {
 
@@ -7,6 +8,16 @@ const App = () => {
   const [ todos, setTodos] = useState('')
   const [ editText, setEditText ] = useState("")
   const [ editId, setEditId ] = useState(null)
+  const [ loading, setLoading] = useState(false)
+ 
+  const getAPI = async() =>{
+    setLoading(true)
+    let response = { isError: false, errorMessage:"", data:{}}
+    await Axios.post("https://caccf-email-microservice.herokuapp.com/api/v1/send-single-mail/")
+    .then(res => response.data = res.data).catch(err => {response={isError:true, errorMessage:err.response.data.message}})
+    setLoading(false)
+    return response;
+  }
 
   useEffect(() => {
     const listFromLocalStorage = JSON.parse(localStorage.getItem("letter"));
@@ -20,10 +31,10 @@ const App = () => {
     localStorage.setItem("letter", JSON.stringify(todoList))
   }, [todoList])
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = async(e) =>{
     e.preventDefault();
 
-    if(!todos || /^\s*$/.test(todos)){
+    if(!todos){
       return
     }
 
@@ -32,11 +43,13 @@ const App = () => {
       input: todos
     }
 
+    let {isError, errorMessage, data} = await getAPI()
+    console.log(isError, errorMessage, data)
+
     const allTodos = [...todoList, addTodo]
 
     setTodoList(allTodos)
     setTodos('')
-    console.log(allTodos)
   }
   
   const handleChange = (e) => {
@@ -74,7 +87,11 @@ const App = () => {
         <h1>What do you have todo?</h1>
         <form>
           <input type="text" placeholder='Type a Todo' value={todos} onChange={handleChange}/>
-          <button type="submit" onClick={handleSubmit}>Add Todo</button>
+
+          { loading === false ? (<button type="submit" onClick={handleSubmit}>Add Todo</button>)
+          :
+          (<button type="submit" onClick={handleSubmit} disabled>Adding...</button>) }
+          
         </form>
 
         <div className="todoContainer">
