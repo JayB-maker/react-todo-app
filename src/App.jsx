@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import "./style/style.css";
 import Axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const App = () => {
 
@@ -9,13 +12,29 @@ const App = () => {
   const [ editText, setEditText ] = useState("")
   const [ editId, setEditId ] = useState(null)
   const [ loading, setLoading] = useState(false)
+
+  // let notify = (message) => {
+  //   toast(message);
+  // }
  
   const getAPI = async() =>{
     setLoading(true)
     let response = { isError: false, errorMessage:"", data:{}}
-    await Axios.post("https://caccf-email-microservice.herokuapp.com/api/v1/send-single-mail/")
+
+    let payLoad = {
+      senderName: "JayB",
+      senderEmail: "ajiboyeabiodun001@gmail.com",
+      receiverName: "hi",
+      receiverEmail: "ajib@gmail.com",
+      body: "hsjkkajuiokdsknmdskkjionsd",
+      subject: "How are you"
+    }
+    await Axios.post("https://caccf-email-microservice.herokuapp.com/api/v1/send-single-mail/", payLoad)
     .then(res => response.data = res.data).catch(err => {response={isError:true, errorMessage:err.response.data.message}})
     setLoading(false)
+
+    response.errorMessage === "" ? (toast("Email successfully sent", {type: toast.TYPE.SUCCESS})) : (toast(response.errorMessage, {type: toast.TYPE.ERROR}));
+
     return response;
   }
 
@@ -35,6 +54,7 @@ const App = () => {
     e.preventDefault();
 
     if(!todos){
+      toast("Field Empty", {type: toast.TYPE.ERROR});
       return
     }
 
@@ -43,8 +63,7 @@ const App = () => {
       input: todos
     }
 
-    let {isError, errorMessage, data} = await getAPI()
-    console.log(isError, errorMessage, data)
+    await getAPI()
 
     const allTodos = [...todoList, addTodo]
 
@@ -64,6 +83,7 @@ const App = () => {
 
   const updateTodo = (id) => {
     if(!editText || /^\s*$/.test(editText)){
+      toast("Field Empty", {type: toast.TYPE.ERROR});
       return;
     }
 
@@ -87,10 +107,9 @@ const App = () => {
         <h1>What do you have todo?</h1>
         <form>
           <input type="text" placeholder='Type a Todo' value={todos} onChange={handleChange}/>
-
-          { loading === false ? (<button type="submit" onClick={handleSubmit}>Add Todo</button>)
-          :
-          (<button type="submit" onClick={handleSubmit} disabled>Adding...</button>) }
+          
+          <button type="submit" onClick={handleSubmit} disabled={loading}>{ loading ? "Adding..." : "Add Todo"}</button>
+          <ToastContainer />
           
         </form>
 
@@ -98,7 +117,7 @@ const App = () => {
           <div className="heading">
             <h1>Your Todo(s)</h1>
 
-            {todoList.length === 0 ? ("") : (<button onClick={() => {setTodoList([])}}>Delete All</button>)}
+            {todoList.length > 0 && <button onClick={() => {setTodoList([])}}>Delete All</button>}
             
           </div>
           {todoList.length === 0 ? (<h2>You have no active todo</h2>) : 
@@ -107,7 +126,7 @@ const App = () => {
                 
                 { editId === todo.id ? (
                   <>
-                    <input type="text" value={editText} onChange={(e) => setEditText(e.target.value)}></input>
+                    <input type="text" value={editText} onChange={(e) => setEditText(e.target.value)} />
                     <button onClick={() => updateTodo(todo.id)}>update</button>
                   </>
                   ) : (
